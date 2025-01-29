@@ -24,15 +24,11 @@
 "visitorNRIC": "98",
 "visitorQuantity": 1,
 "visitorPurposeOfVisit": "sleep",
-"visitorVehicleType": null,
-"visitorVehicle": null,
+"visitorVehicleType": ,
+"visitorVehicle": ,
 "visitorVehiclePlate": "123213",
 "approvalStatus": "P",
 "unitNumberId": 1,
-"createdById": null,
-"createdDate": null,
-"qrFileName": null,
-"qrExpiryDate": null,
 "unitNumber": null
 },
 {
@@ -54,3 +50,47 @@
 "unitNumber": null
 }
 ]
+
+
+VisitorID
+integer($int32)
+
+
+VisitorName
+string
+
+
+VisitorMobileNo
+string
+
+
+VisitorNRIC
+string
+
+
+Quantity
+integer($int32)
+
+
+PurposeOfVisit
+string
+
+
+VehicleType
+integer($int32)
+
+
+PlateNo
+string
+
+
+UnitNumberID
+integer($int32)
+
+
+CreatedByID
+integer($int32)
+
+
+Status
+string | P

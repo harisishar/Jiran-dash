@@ -1,36 +1,45 @@
 export type Visitor = {
-  visitorId: number;
+  visitorId?: number;
   visitorName: string;
   visitorMobileNo: string;
   visitorNRIC: string;
   visitorQuantity: number;
   visitorPurposeOfVisit: string;
-  visitorVehicleType: string | null;
-  visitorVehicle: string | null;
+  visitorVehicleType: number;
   visitorVehiclePlate: string;
-  approvalStatus: string;
+  approvalStatus?: string;
   unitNumberId: number;
-  createdById: number | null;
-  createdDate: string | null;
-  qrFileName: string | null;
-  qrExpiryDate: string | null;
-  unitNumber: string | null;
+  createdById: number;
+  createdDate?: string;
+  qrFileName?: string;
+  qrExpiryDate?: string;
+  unitNumber?: string;
 };
 
 export const visitorApi = {
   registerVisitor: async (visitorData: Partial<Visitor>): Promise<void> => {
     try {
-      const response = await fetch('https://jiran-webapi.onrender.com/User/RegisterVisitor', {
+      const queryParams = new URLSearchParams({
+        providedVisitorName: visitorData.visitorName || '',
+        providedVisitorMobileNo: visitorData.visitorMobileNo || '',
+        providedVisitorNRIC: visitorData.visitorNRIC || '',
+        providedQuantity: visitorData.visitorQuantity?.toString() || '0',
+        providedPurposeOfVisit: visitorData.visitorPurposeOfVisit || '',
+        providedVehicleType: visitorData.visitorVehicleType?.toString() || '0',
+        providedPlateNo: visitorData.visitorVehiclePlate || '',
+        providedUnitNumberID: visitorData.unitNumberId?.toString() || '0',
+        providedCreatedByID: visitorData.createdById?.toString() || '0',
+      });
+
+      const response = await fetch(`/api/User/RegisterVisitor?${queryParams.toString()}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Accept': '*/*'
-        },
-        body: JSON.stringify(visitorData)
+        }
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
         throw new Error(`Failed to register visitor: ${response.status} ${response.statusText} - ${errorData.message}`);
       }
     } catch (error) {
@@ -39,19 +48,54 @@ export const visitorApi = {
     }
   },
 
-  updateVisitor: async (visitorData: Partial<Visitor>): Promise<void> => {
+  getVisitorById: async (id: string): Promise<Visitor> => {
     try {
-      const response = await fetch('https://jiran-webapi.onrender.com/User/UpdateVisitor', {
-        method: 'POST',
+      const response = await fetch(`/api/User/GetVisitor?unitUserID=${id}`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': '*/*'
-        },
-        body: JSON.stringify(visitorData)
+          'Accept': '*/*',
+          'Content-Type': 'application/json'
+        }
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+        throw new Error(`Failed to fetch visitor: ${response.status} ${response.statusText} - ${errorData.message}`);
+      }
+
+      const visitors = await response.json();
+      return visitors.find((visitor: Visitor) => visitor.visitorId === parseInt(id));
+    } catch (error) {
+      console.error('Error fetching visitor:', error);
+      throw error;
+    }
+  },
+
+  updateVisitor: async (visitorData: Partial<Visitor>): Promise<void> => {
+    try {
+      const queryParams = new URLSearchParams({
+        providedVisitorID: visitorData.visitorId?.toString() || '',
+        providedVisitorName: visitorData.visitorName || '',
+        providedVisitorMobileNo: visitorData.visitorMobileNo || '',
+        providedVisitorNRIC: visitorData.visitorNRIC || '',
+        providedQuantity: visitorData.visitorQuantity?.toString() || '0',
+        providedPurposeOfVisit: visitorData.visitorPurposeOfVisit || '',
+        providedVehicleType: visitorData.visitorVehicleType?.toString() || '0',
+        providedPlateNo: visitorData.visitorVehiclePlate || '',
+        providedUnitNumberID: visitorData.unitNumberId?.toString() || '0',
+        providedCreatedByID: visitorData.createdById?.toString() || '0',
+        providedStatus: visitorData.approvalStatus || 'A',
+      });
+
+      const response = await fetch(`/api/User/UpdateVisitor?${queryParams.toString()}`, {
+        method: 'POST',
+        headers: {
+          'Accept': '*/*'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
         throw new Error(`Failed to update visitor: ${response.status} ${response.statusText} - ${errorData.message}`);
       }
     } catch (error) {
