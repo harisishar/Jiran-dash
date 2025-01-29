@@ -40,27 +40,27 @@ export default function VisitorsPage() {
       <div className="flex justify-end mb-4">
         <div className="text-black">Total Visitors: {visitors.length}</div>
       </div>
-      <table className="min-w-full bg-white">
+      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
         <thead>
-          <tr>
-            <th className="py-2 text-black">Name</th>
-            <th className="py-2 text-black">Mobile No</th>
-            <th className="py-2 text-black">NRIC</th>
-            <th className="py-2 text-black">Purpose</th>
-            <th className="py-2 text-black">Actions</th>
+          <tr className="bg-gray-50">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Name</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Mobile No</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">NRIC</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Purpose</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {visitors.map((visitor) => (
-            <tr key={visitor.visitorId}>
-              <td className="py-2 text-black">{visitor.visitorName}</td>
-              <td className="py-2 text-black">{visitor.visitorMobileNo}</td>
-              <td className="py-2 text-black">{visitor.visitorNRIC}</td>
-              <td className="py-2 text-black">{visitor.visitorPurposeOfVisit}</td>
-              <td className="py-2">
+            <tr key={visitor.visitorId} className="hover:bg-gray-50 transition-colors">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visitor.visitorName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visitor.visitorMobileNo}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visitor.visitorNRIC}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visitor.visitorPurposeOfVisit}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <Link
                   href={`/visitors/${visitor.visitorId}/edit`}
-                  className="text-blue-600 hover:text-blue-800"
+                  className="text-indigo-600 hover:text-indigo-900 font-medium"
                 >
                   Edit
                 </Link>
