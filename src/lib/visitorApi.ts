@@ -30,7 +30,8 @@ export const visitorApi = {
         providedUnitNumberID: visitorData.unitNumberId?.toString() || '0',
         providedCreatedByID: visitorData.createdById?.toString() || '0',
       });
-
+      
+      // Register Visitor to API
       const response = await fetch(`/api/User/RegisterVisitor?${queryParams.toString()}`, {
         method: 'POST',
         headers: {
@@ -47,7 +48,7 @@ export const visitorApi = {
       throw error;
     }
   },
-
+// Get Visitor By ID for UPDATE VISITOR
   getVisitorById: async (id: string): Promise<Visitor> => {
     try {
       const response = await fetch(`/api/User/GetVisitor?unitUserID=${id}`, {
@@ -86,7 +87,7 @@ export const visitorApi = {
         providedCreatedByID: visitorData.createdById?.toString() || '0',
         providedStatus: visitorData.approvalStatus || 'A',
       });
-
+      // PUSH TO API TO UPDATE VISITOR
       const response = await fetch(`/api/User/UpdateVisitor?${queryParams.toString()}`, {
         method: 'POST',
         headers: {
@@ -103,7 +104,7 @@ export const visitorApi = {
       throw error;
     }
   },
-
+ // GET ALL VISITORS FROM API
   getVisitors: async (): Promise<Visitor[]> => {
     try {
       const response = await fetch('/api/User/GetVisitor', {
